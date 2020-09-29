@@ -1,0 +1,21 @@
+hosts: 127.0.0.1
+  connection: local
+  gather_facts: True
+  vars:
+          target_host: hxcsvc-c01.jazpak
+          target_ssh_port: 22    
+  tasks:
+          - name: Checking today's date
+            shell: ssh {{ target_host }} "date"
+            vars: 
+                executable: /usr/bin/bash
+            register: today_date
+          
+            # - debug:
+            #     msg: '{{ today_date.stdout_lines }}'
+          - debug: msg="{{today_date.stdout_lines}}"
+
+          - name:  Copy
+            shell: ssh {{ target_host }} "cp /var/cs/installations/countries/pk/plmns/mobilink/products/smsgw/instances/prod/edr/*20200928-16* ~/Shahbaz"
+            register: files_copied
+          - debug: msg="{{files_copied.stdout_lines}}"
